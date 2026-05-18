@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeBears - Servicios</title>
+    <link rel="icon" href="image/oso2.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+    const { useState } = React;
+
+    function Header({ siteName }) {
+        return (
+            <header>
+                <h1>{siteName}</h1>
+                <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#d4edda" }}>
+                    Desarrollo web con garras — Sin hibernar desde 2015
+                </p>
+            </header>
+        );
+    }
+
+    function Nav() {
+        return (
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="https://www.w3schools.com" target="_blank">Recursos</a></li>
+                </ul>
+            </nav>
+        );
+    }
+
+    function ServiceCard({ titulo, imagen, descripcion, tecnologias, pasos }) {
+        const [expandido, setExpandido] = useState(false);
+
+        return (
+            <section>
+                <h2>{titulo}</h2>
+                <img src={imagen} alt={titulo} width="500" />
+                <p>{descripcion}</p>
+                <button
+                    className="btn-oso"
+                    onClick={() => setExpandido(!expandido)}
+                    style={{ backgroundColor: "#3d6b40", color: "white", border: "none", padding: "7px 16px", cursor: "pointer", marginBottom: "10px" }}
+                >
+                    {expandido ? "Ocultar detalles" : "Ver detalles"}
+                </button>
+                {expandido && (
+                    <div style={{ animation: "fadeIn 0.4s ease" }}>
+                        <h3>Tecnologías:</h3>
+                        <ul>
+                            {tecnologias.map((t, i) => <li key={i}>{t}</li>)}
+                        </ul>
+                        <h3>Pasos del proceso:</h3>
+                        <ol>
+                            {pasos.map((p, i) => <li key={i}>{p}</li>)}
+                        </ol>
+                    </div>
+                )}
+            </section>
+        );
+    }
+
+    function PlanesTable({ planes }) {
+        const [planSeleccionado, setPlanSeleccionado] = useState(null);
+
+        return (
+            <section>
+                <h2>Planes</h2>
+                <p>Tenemos un plan para cada tamaño de proyecto. Desde el oso hormiguero hasta el oso kodiak.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            {planes.map((p, i) => <th key={i}>{p.nombre}</th>)}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Páginas incluidas</td>
+                            {planes.map((p, i) => <td key={i}>{p.paginas}</td>)}
+                        </tr>
+                        <tr>
+                            <td>Diseño responsivo</td>
+                            {planes.map((p, i) => <td key={i}>{p.responsivo}</td>)}
+                        </tr>
+                        <tr>
+                            <td>Panel de administración</td>
+                            {planes.map((p, i) => <td key={i}>{p.panel}</td>)}
+                        </tr>
+                        <tr>
+                            <td>Soporte técnico</td>
+                            {planes.map((p, i) => <td key={i}>{p.soporte}</td>)}
+                        </tr>
+                        <tr>
+                            <td>Precio mensual</td>
+                            {planes.map((p, i) => <td key={i}>{p.precio}</td>)}
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style={{ marginTop: "12px" }}>Selecciona un plan para más información:</p>
+                <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+                    {planes.map((p, i) => (
+                        <button
+                            key={i}
+                            className="btn-oso"
+                            onClick={() => setPlanSeleccionado(planSeleccionado === i ? null : i)}
+                            style={{ backgroundColor: planSeleccionado === i ? "#e07b00" : "#3d6b40", color: "white", border: "none", padding: "6px 14px", cursor: "pointer" }}
+                        >
+                            {p.nombre}
+                        </button>
+                    ))}
+                </div>
+
+                {planSeleccionado !== null && (
+                    <div style={{ backgroundColor: "#f0f7f0", border: "1px solid #a8d5a8", padding: "12px", animation: "fadeIn 0.4s ease" }}>
+                        <strong>{planes[planSeleccionado].nombre}</strong>: {planes[planSeleccionado].detalle}
+                        <br />
+                        <a href="contacto.html">Consultar por este plan</a>
+                    </div>
+                )}
+            </section>
+        );
+    }
+
+    function App() {
+        const servicios = [
+            {
+                titulo: "Diseño Web",
+                imagen: "image/osos.jpg",
+                descripcion: "Construimos sitios web que no pasan desapercibidos, igual que un oso en medio de una plaza. Usamos HTML5, CSS3 y frameworks modernos para que tu sitio se vea oso-mbrosamente bien en cualquier dispositivo.",
+                tecnologias: ["HTML5 semántico", "CSS3 y hojas de estilo externas", "Bootstrap", "Diseño adaptable a móvil"],
+                pasos: ["Reunión con el cliente", "Diseño del prototipo", "Desarrollo del sitio", "Revisión y correcciones", "Entrega final"]
+            },
+            {
+                titulo: "Aplicaciones Web",
+                imagen: "image/fatoso.png",
+                descripcion: "Desarrollamos aplicaciones web robustas y escalables. Las construimos para que aguanten el peso de tu negocio, igual que un oso aguanta el invierno: con fuerza y sin quejas.",
+                tecnologias: ["Frontend: HTML, CSS, JavaScript, React", "Backend: Node.js o Python", "Base de datos: MySQL", "Servidor: Nube (AWS o similar)"],
+                pasos: ["Levantamiento de requerimientos", "Arquitectura del sistema", "Desarrollo iterativo", "Pruebas con Polabert Mieloso", "Despliegue"]
+            }
+        ];
+
+        const planes = [
+            {
+                nombre: "Plan Básico",
+                paginas: "Hasta 5",
+                responsivo: "Sí",
+                panel: "No",
+                soporte: "Correo",
+                precio: "$150.000",
+                detalle: "Ideal para negocios pequeños que necesitan presencia en internet. Tu primera guarida digital, bien hecha."
+            },
+            {
+                nombre: "Plan Profesional",
+                paginas: "Hasta 15",
+                responsivo: "Sí",
+                panel: "Sí",
+                soporte: "Correo y chat",
+                precio: "$350.000",
+                detalle: "Para empresas en crecimiento. Más páginas, panel de administración y soporte rápido. El plan favorito de nuestros clientes medianos."
+            },
+            {
+                nombre: "Plan Empresa",
+                paginas: "Ilimitadas",
+                responsivo: "Sí",
+                panel: "Sí",
+                soporte: "Dedicado",
+                precio: "A convenir",
+                detalle: "Solución completa para grandes organizaciones. Un oso kodiak de plan: el más grande, el más potente, a tu medida."
+            }
+        ];
+
+        return (
+            <div>
+                <Header siteName="CodeBears" />
+                <Nav />
+                <main>
+                    <section>
+                        <h2>Servicios</h2>
+                        <p>Aquí están nuestras especialidades. Para consultas y cotizaciones, ve directo a <a href="contacto.html">Contacto</a>. No mordemos.</p>
+                    </section>
+
+                    {servicios.map((s, i) => (
+                        <ServiceCard
+                            key={i}
+                            titulo={s.titulo}
+                            imagen={s.imagen}
+                            descripcion={s.descripcion}
+                            tecnologias={s.tecnologias}
+                            pasos={s.pasos}
+                        />
+                    ))}
+
+                    <PlanesTable planes={planes} />
+                </main>
+                <footer>
+                    <p>CodeBears &copy; 2026 | Desarrollado por Vicente Fernandez</p>
+                    <p><a href="contacto.html">Contacto</a></p>
+                </footer>
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+
+</script>
+
+</body>
+</html>
