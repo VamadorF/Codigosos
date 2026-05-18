@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeBears - Inicio</title>
+    <link rel="icon" href="image/oso2.jpg" type="image/jpeg">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+    const { useState } = React;
+
+    function Header({ siteName }) {
+        return (
+            <header>
+                <h1>{siteName}</h1>
+                <p style={{ margin: "4px 0 0", fontSize: "14px", color: "#d4edda" }}>
+                    Desarrollo web con garras — Sin hibernar desde 2015
+                </p>
+            </header>
+        );
+    }
+
+    function Nav() {
+        return (
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="servicios.html">Servicios</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                    <li><a href="https://www.w3schools.com" target="_blank">Recursos</a></li>
+                </ul>
+            </nav>
+        );
+    }
+
+    function TeamCard({ nombre, cargo, imagen, descripcion }) {
+        const [mostrarInfo, setMostrarInfo] = useState(false);
+        const [hover, setHover] = useState(false);
+
+        return (
+            <div
+                className="tarjeta-oso"
+                onMouseEnter={() => setHover(true)}
+                onMouseLeave={() => setHover(false)}
+                style={{
+                    border: hover ? "2px solid #e07b00" : "2px solid #3d6b40",
+                    padding: "15px",
+                    margin: "10px",
+                    backgroundColor: "white",
+                    maxWidth: "210px",
+                    textAlign: "center"
+                }}
+            >
+                <img src={imagen} alt={nombre} width="160" style={{ border: "2px solid #e07b00" }} />
+                <h3 style={{ color: "#3d6b40", fontSize: "15px", borderLeft: "4px solid #e07b00", backgroundColor: "#f0f7f0", textAlign: "left", padding: "4px 8px" }}>{nombre}</h3>
+                <p style={{ fontSize: "13px", color: "#666", margin: "4px 0" }}>{cargo}</p>
+                <button
+                    className="btn-oso"
+                    onClick={() => setMostrarInfo(!mostrarInfo)}
+                    style={{ backgroundColor: "#3d6b40", color: "white", border: "none", padding: "5px 12px", cursor: "pointer", fontSize: "13px" }}
+                >
+                    {mostrarInfo ? "Ocultar" : "Ver más"}
+                </button>
+                {mostrarInfo && (
+                    <p style={{ fontSize: "13px", marginTop: "8px", textAlign: "left", color: "#444", animation: "fadeIn 0.4s ease" }}>{descripcion}</p>
+                )}
+            </div>
+        );
+    }
+
+    function TeamSection({ equipo }) {
+        return (
+            <section>
+                <h2>Nuestro equipo</h2>
+                <p>Conoce al clan fur-midable que hace funcionar CodeBears. Somos distintos, pero todos tenemos las garras bien puestas.</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                    {equipo.map((miembro, index) => (
+                        <TeamCard
+                            key={index}
+                            nombre={miembro.nombre}
+                            cargo={miembro.cargo}
+                            imagen={miembro.imagen}
+                            descripcion={miembro.descripcion}
+                        />
+                    ))}
+                </div>
+            </section>
+        );
+    }
+
+    function StatsTable({ datos }) {
+        return (
+            <section>
+                <h2>Proyectos por año</h2>
+                <p>Nuestros números hablan solos. Sin hibernar, proyecto a proyecto.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Año</th>
+                            <th>Proyectos</th>
+                            <th>Clientes</th>
+                            <th>Satisfacción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {datos.map((fila, i) => (
+                            <tr key={i}>
+                                <td>{fila.anio}</td>
+                                <td>{fila.proyectos}</td>
+                                <td>{fila.clientes}</td>
+                                <td>{fila.satisfaccion}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </section>
+        );
+    }
+
+    function App() {
+        const [saludo] = useState(() => {
+            const hora = new Date().getHours();
+            if (hora >= 6 && hora < 12) return "Buenos días";
+            if (hora >= 12 && hora < 19) return "Buenas tardes";
+            return "Buenas noches";
+        });
+
+        const equipo = [
+            {
+                nombre: "Bearnardo Ursúa",
+                cargo: "CEO & Desarrollo",
+                imagen: "image/oso3.jpg",
+                descripcion: "Fundador y CEO de CodeBears. Con más de 11 años en el bosque digital, tiene un instinto certero para detectar bugs antes de que lleguen a producción. 'Si hay un problema en el código, lo olemos desde lejos.' Especialista en arquitectura de sistemas y metodologías ágiles. Ha liderado más de 300 proyectos sin hibernar ni un solo invierno."
+            },
+            {
+                nombre: "Oswald Grizzman",
+                cargo: "Diseño UX",
+                imagen: "image/oso4.jpg",
+                descripcion: "La mente creativa detrás de cada interfaz de CodeBears. Dice que un buen diseño debe ser como un oso polar: elegante, poderoso y difícil de ignorar. Experto en Figma, prototipado y diseño responsivo. Sus interfaces son tan intuitivas que hasta un oso recién salido de hibernación las entiende a la primera."
+            },
+            {
+                nombre: "Grizzelda Pardos",
+                cargo: "Backend",
+                imagen: "image/oso5.png",
+                descripcion: "Desarrolladora backend con garras afiladas para el código. Maneja PostgreSQL, Node.js y Python con la misma destreza con que un oso pardo pesca salmones en un río. Certificada en AWS. Es la encargada de que los datos fluyan sin tropiezos y la arquitectura aguante el peso de cualquier proyecto, por grande que sea."
+            },
+            {
+                nombre: "Polabert Mieloso",
+                cargo: "QA & Testing",
+                imagen: "image/oso6.png",
+                descripcion: "El más meticuloso del equipo. Revisa cada línea de código como si buscara miel en un panal gigante: con paciencia, precisión y sin dejar nada sin probar. Especialista en testing manual y automatizado. Bajo su guardia, ningún bug llega vivo a producción. Grr-antizado."
+            }
+        ];
+
+        const stats = [
+            { anio: 2021, proyectos: 47, clientes: 39, satisfaccion: "93%" },
+            { anio: 2022, proyectos: 63, clientes: 52, satisfaccion: "95%" },
+            { anio: 2023, proyectos: 78, clientes: 64, satisfaccion: "97%" },
+            { anio: 2024, proyectos: 91, clientes: 75, satisfaccion: "98%" },
+            { anio: 2025, proyectos: 104, clientes: 89, satisfaccion: "99%" },
+            { anio: 2026, proyectos: 61, clientes: 54, satisfaccion: "99%" }
+        ];
+
+        return (
+            <div>
+                <Header siteName="CodeBears" />
+                <Nav />
+                <img src="image/bosque.jpg" alt="Bosque de osos — nuestro hábitat natural" className="banner-imagen" />
+                <main>
+                    <section>
+                        <h2>Bienvenido a CodeBears</h2>
+                        <p><strong>{saludo}</strong>, bienvenido al bosque digital.</p>
+                        <img src="image/oso.jpg" alt="Imagen empresa" width="500" />
+                        <p>Somos una empresa de desarrollo web con sede en Santiago, Chile. Llevamos más de 11 años en el bosque digital, ayudando a negocios de todo tipo a tener una presencia en internet oso-mbrosamente efectiva.</p>
+                        <p>Trabajamos con clientes de distintos rubros: retail, salud, educación y más. Tu proyecto no se quedará en la cueva. Si quieres conocer más, visita nuestra sección de <a href="servicios.html">Servicios</a>.</p>
+                    </section>
+
+                    <section>
+                        <h2>Lo que hacemos</h2>
+                        <p>Cargamos tus proyectos como osos cargan salmones: con fuerza, precisión y sin soltar hasta llegar a la orilla. Nuestros servicios principales son:</p>
+                        <ul>
+                            <li>Diseño y desarrollo de sitios web</li>
+                            <li>Aplicaciones web a medida</li>
+                            <li>Consultoría tecnológica</li>
+                            <li>Soporte y mantención</li>
+                        </ul>
+                        <p>Trabajamos con HTML5, CSS3, JavaScript y React. Puedes revisar los estándares en <a href="https://developer.mozilla.org/es/" target="_blank">MDN Web Docs</a>.</p>
+                    </section>
+
+                    <StatsTable datos={stats} />
+
+                    <section>
+                        <h2>Cómo trabajamos</h2>
+                        <p>Nuestro proceso es directo, sin rodeos y con las garras en el código desde el primer día:</p>
+                        <ol>
+                            <li>El cliente nos contacta con su idea o necesidad</li>
+                            <li>Hacemos una reunión para entender el proyecto a fondo</li>
+                            <li>Enviamos una propuesta y cotización sin letra chica</li>
+                            <li>Iniciamos el desarrollo por etapas, con avances periódicos</li>
+                            <li>Entregamos el producto final y ofrecemos soporte continuo</li>
+                        </ol>
+                        <p>Somos miembros de <a href="https://www.acti.cl" target="_blank">ACTI</a>, la Asociación Chilena de Empresas de Tecnologías de Información.</p>
+                    </section>
+
+                    <TeamSection equipo={equipo} />
+
+                    <section>
+                        <h2>¿Por qué elegirnos?</h2>
+                        <img src="image/oso2.jpg" alt="El equipo CodeBears" width="400" />
+                        <p>Porque somos un equipo fur-midable que no hiberna. Mientras otros descansan, nosotros estamos depurando código, ajustando interfaces y Grr-antizando que tu proyecto esté listo a tiempo.</p>
+                        <p>No somos una agencia cualquiera: somos CodeBears, y ponemos las garras en cada línea que escribimos.</p>
+                    </section>
+
+                </main>
+                <footer>
+                    <p>CodeBears &copy; 2026 | Desarrollado por Vicente Fernandez</p>
+                    <p><a href="contacto.html">Contacto</a></p>
+                </footer>
+            </div>
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<App />);
+
+</script>
+
+</body>
+</html>
